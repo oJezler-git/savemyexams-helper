@@ -209,9 +209,11 @@
         <label for="level">Select Level:</label>
         <select id="level">
             <option value="">--Select--</option>
-            <option value="GCSE">GCSE</option>
+            <option value="GCSE">GCSE (Separate)</option>
+            <option value="GCSE Combined">GCSE (Combined)</option>
             <option value="A-Level">A-Level</option>
         </select>
+        
 
         <button onclick="searchPDF()">Search PDFs</button>
         <span class="hint">Note that this isn't guaranteed to find what you're looking for, you may have to do more digging.</span>
@@ -230,32 +232,44 @@
             <div class="electron electron3"></div>
         </div>
     </div>
+<script>
+    function searchPDF() {
+        const topic = document.getElementById("topic").value;
+        const examBoard = document.getElementById("exam-board").value;
+        const level = document.getElementById("level").value;
 
-    <script>
-        function searchPDF() {
-            const topic = document.getElementById("topic").value;
-            const examBoard = document.getElementById("exam-board").value;
-            const level = document.getElementById("level").value;
-
-            if (topic.trim() === "") {
-                alert("Please enter a topic.");
-                return;
-            }
-
-            let searchTerm = `site:savemyexams.com filetype:pdf "${topic}"`;
-
-            if (examBoard) {
-                searchTerm += ` "${examBoard}"`;
-            }
-
-            if (level) {
-                searchTerm += ` "${level}"`;
-            }
-
-            const searchURL = `https://www.google.com/search?q=${encodeURIComponent(searchTerm)}`;
-            window.open(searchURL, "_blank");
+        if (topic.trim() === "") {
+            alert("Please enter a topic.");
+            return;
         }
-    </script>
 
+        let searchTerm = `site:savemyexams.com filetype:pdf "${topic}"`;
+
+        if (examBoard) {
+            searchTerm += ` "${examBoard}"`;
+        }
+
+        if (level) {
+            if (level.includes("GCSE")) {
+                searchTerm += ` "GCSE"`;
+            } else if (level.includes("A-Level")) {
+                searchTerm += ` "A-Level"`;
+            }
+
+            if (level === "GCSE Combined") {
+                searchTerm += ` "Combined"`;
+            } else if (level === "GCSE Separate") {
+                searchTerm += ` -"Combined"`;
+            }
+        }
+
+        const searchURL = `https://www.google.com/search?q=${encodeURIComponent(searchTerm)}`;
+        const newWindow = window.open(searchURL, "_blank");
+        
+        if (newWindow === null || typeof(newWindow) === 'undefined') {
+            alert("Pop-up was blocked. Please allow pop-ups for this site to use the search function.");
+        }
+    }
+</script>
 </body>
 </html>
