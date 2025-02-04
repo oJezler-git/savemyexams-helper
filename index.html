@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Search Helper</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    label {
+        display: block;
+        margin-top: 20px;
+        color: #555;
+    }
+
+    input[type="text"],
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 20px;
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .output {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #e9ecef;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .hint {
+        font-size: 12px;
+        color: #888;
+        display: inline-block;
+        margin-left: 5px;
+    }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <title>savemyexams Revision Notes Helper</title>
+
+        <label for="topic">Sub Topic:</label>
+        <input type="text" id="topic" placeholder="Enter your topic">
+        <span class="hint">There's a main topic (e.g., Cell Biology) and its subtopics (e.g., Cell Structure, Cell Division). Input the SUB TOPIC here.</span>
+
+        <label for="exam-board">Choose Exam Board:</label>
+        <select id="exam-board">
+            <option value="">--Select--</option>
+            <option value="AQA">AQA</option>
+            <option value="OCR">OCR</option>
+            <option value="Edexcel">Edexcel</option>
+            <option value="Eduqas">Eduqas</option>
+        </select>
+
+        <label for="level">Select Level:</label>
+        <select id="level">
+            <option value="">--Select--</option>
+            <option value="GCSE">GCSE</option>
+            <option value="A-Level">A-Level</option>
+        </select>
+
+        <button onclick="searchPDF()">Search PDFs</button>
+        <span class="hint">Note that this isn't guarenteeed to find what you're looking for, you may have to do more digging.</span>
+
+    </div>
+
+    <script>
+        function searchPDF() {
+            const topic = document.getElementById("topic").value;
+            const examBoard = document.getElementById("exam-board").value;
+            const level = document.getElementById("level").value;
+
+            if (topic.trim() === "") {
+                alert("Please enter a topic.");
+                return;
+            }
+
+            let searchTerm = `site:savemyexams.com filetype:pdf "${topic}"`;
+
+            if (examBoard) {
+                searchTerm += ` "${examBoard}"`;
+            }
+
+            if (level) {
+                searchTerm += ` "${level}"`;
+            }
+
+            const searchURL = `https://www.google.com/search?q=${encodeURIComponent(searchTerm)}`;
+            window.open(searchURL, "_blank");
+        }
+    </script>
+
+</body>
+</html>
